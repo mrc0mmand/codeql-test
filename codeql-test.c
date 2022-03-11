@@ -1,31 +1,43 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-__attribute__((__noreturn__)) void assert_no_return_c99(void) {
-    abort();
-}
+#include <stdnoreturn.h>
 
 _Noreturn void assert_no_return_c11(void) {
-    abort();
+    puts("c11");
 }
 
-int foo(int x) {
-    if (x > 10)
-        return 42;
+noreturn void assert_no_return_c11_std(void) {
+    puts("c11 std");
+}
+
+__attribute__((__noreturn__)) void assert_no_return_c99(void) {
+    puts("c99");
+}
+
+static int foo_c99(int x) {
+    if (x == 42)
+        return 0;
 
     assert_no_return_c99();
 }
 
-int bar(int x) {
-    if (x > 10)
-        return 42;
+static int bar_c11(int x) {
+    if (x == 42)
+        return 0;
 
     assert_no_return_c11();
 }
 
+static int baz_c11_std(int x) {
+    if (x == 42)
+        return 0;
+
+    assert_no_return_c11_std();
+}
+
 int main(void) {
-    foo(99);
-    bar(99);
+    foo_c99(42);
+    bar_c11(42);
+    baz_c11_std(42);
 
     return 0;
 }
